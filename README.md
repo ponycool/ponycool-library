@@ -1,11 +1,13 @@
-English | [中文]()
+English | [中文](https://github.com/PonyCool/ponycool-library/blob/main/README-ZH.md)
+
 # What is ponycool-library
+
 ponycool-library is an extension library for the CodeIgniter framework
 
 # Requirements
 
-PHP version 8.0 or higher is required
-CodeIgniter 4.0 or higher
+- PHP version 8.0 or higher is required
+- CodeIgniter 4.0 or higher
 
 # License
 
