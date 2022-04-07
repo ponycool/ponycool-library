@@ -1,8 +1,8 @@
 English | [中文](https://github.com/PonyCool/ponycool-library/blob/main/README-ZH.md)
 
-# What is ponycool-library
+# What is PonyCool Library
 
-ponycool-library is an extension library for the CodeIgniter framework
+PonyCool Library is an extension library for the CodeIgniter framework
 
 # Requirements
 
