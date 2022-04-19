@@ -26,7 +26,7 @@ cp -a $SOURCE_PROJECT_PATH $PROJECT_PATH && rm -f $PROJECT_PATH/.DS_Store
 
 # shellcheck disable=SC2181
 if [ "$?" != 0 ]; then
-  error "Copy failed"
+  error "Copy FAILED"
 else
   success "Copy SUCCESS"
 fi
