@@ -6,7 +6,7 @@ PonyCool Library 是一个为CodeIgniter框架提供支持的扩展库
 
 # 要求
 
-- PHP 8.0 或更高版本
+- PHP 8.1 或更高版本
 - CodeIgniter 4.0 或更高版本
 
 # 开源协议
