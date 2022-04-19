@@ -17,10 +17,12 @@ function error() {
 }
 
 SOURCE_PROJECT_PATH=~/Documents/Dev/webroot/ponycool-core/app/ThirdParty/PonyCool
+PROJECT_PATH=~/Documents/Dev/webroot/ponycool-library/PonyCool
 
 info "开始同步......"
 
-cp -a $SOURCE_PROJECT_PATH ../
+rm -rf $PROJECT_PATH
+cp -a $SOURCE_PROJECT_PATH $PROJECT_PATH && rm -f $PROJECT_PATH/.DS_Store
 
 # shellcheck disable=SC2181
 if [ "$?" != 0 ]; then
