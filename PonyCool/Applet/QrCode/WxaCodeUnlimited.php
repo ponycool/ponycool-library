@@ -73,8 +73,8 @@ class WxaCodeUnlimited
         if (Json::isJsonStr($res)) {
             $res = json_decode($res, true);
         }
-        if (is_array($res) && array_key_exists('errcode', $res)) {
-            return [false, $res['errmsg']];
+        if (is_array($res) && array_key_exists(strtolower("errCode"), $res)) {
+            return [false, $res[strtolower("errMsg")]];
         }
         return [true, $res];
     }
