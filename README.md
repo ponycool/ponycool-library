@@ -7,7 +7,7 @@ PonyCool Library is an extension library for the CodeIgniter framework
 # Requirements
 
 - PHP version 8.1 or higher is required
-- CodeIgniter 4.0 or higher
+- CodeIgniter 4.2.1 or higher
 
 # License
 
