@@ -1,20 +1,12 @@
 #!/usr/bin/env bash
 
-# 提示信息
-function info() {
-  echo -e "\033[32m提示信息：$1\033[0m"
-}
-
-# 成功信息
-function success() {
-  echo -e "\033[36m成功信息：$1\033[0m"
-}
-
-# 错误信息
-function error() {
-  echo -e "\033[31m错误信息：$1\033[0m"
-  exit
-}
+DIRNAME=$0
+if [ "${DIRNAME:0:1}" = "/" ]; then
+  CUR_DIR=$(dirname "$DIRNAME")
+else
+  CUR_DIR="$(pwd)"/"$(dirname "$DIRNAME")"
+fi
+. "$CUR_DIR"/message.sh
 
 SOURCE_PROJECT_PATH=~/Documents/Dev/webroot/ponycool-core/app/ThirdParty/PonyCool
 PROJECT_PATH=~/Documents/Dev/webroot/ponycool-library/PonyCool
