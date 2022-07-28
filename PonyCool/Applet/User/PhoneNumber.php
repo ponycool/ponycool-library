@@ -16,7 +16,7 @@ class PhoneNumber
     /**
      * 获取用户手机号码
      * @param string $token 接口调用凭证
-     * @param string $code 手机号获取凭证
+     * @param string $code 手机号获取凭证，BindGetPhoneNumber事件回调获取到动态令牌code，与wx.login返回的code作用是不一样的，不能混用
      * @return array
      */
     public static function get(string $token, string $code): array
@@ -34,16 +34,17 @@ class PhoneNumber
 
         $data = json_encode($data);
 
+        log_message("debug", json_encode($params));
         $res = Curl::do($url, data: $data, method: 'POST');
 
         if (Json::isJsonStr($res)) {
             $res = json_decode($res, true);
         }
-        if (is_array($res) && array_key_exists('errcode', $res)) {
-            if ($res['errcode'] === 0) {
+        if (is_array($res) && array_key_exists(strtolower("errCode"), $res)) {
+            if ($res[strtolower("errCode")] === 0) {
                 return [true, $res['phone_info']];
             }
-            return [false, $res['errmsg'] ?? '获取小程序用户手机号失败，返回结果不符合预期格式'];
+            return [false, $res[strtolower("errMsg")] ?? '获取小程序用户手机号失败，返回结果不符合预期格式'];
         }
         return [false, $res];
     }
