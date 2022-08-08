@@ -5,7 +5,7 @@ namespace PonyCool\Core\Client;
 
 class Client
 {
-    private $IP;
+    private string $IP;
 
     /**
      * @param bool $adv
