@@ -34,7 +34,6 @@ class PhoneNumber
 
         $data = json_encode($data);
 
-        log_message("debug", json_encode($params));
         $res = Curl::do($url, data: $data, method: 'POST');
 
         if (Json::isJsonStr($res)) {
