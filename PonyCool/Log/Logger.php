@@ -33,7 +33,7 @@ class Logger
      * @param string|null $logPath 日志路径
      */
     public static function log(string $message, array $context = [], string $channel = 'system',
-                               int    $level = MonoLogger::DEBUG, ?string $logPath = null)
+                               int    $level = MonoLogger::DEBUG, ?string $logPath = null): void
     {
         if (is_null($logPath)) {
             return;

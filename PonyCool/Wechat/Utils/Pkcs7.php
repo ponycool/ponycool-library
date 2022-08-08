@@ -34,10 +34,7 @@ class Pkcs7
         }
         //获得补位所用的字符
         $pad_chr = chr($amount_to_pad);
-        $tmp = "";
-        for ($index = 0; $index < $amount_to_pad; $index++) {
-            $tmp .= $pad_chr;
-        }
+        $tmp = str_repeat($pad_chr, $amount_to_pad);
         return $text . $tmp;
     }
 

@@ -27,8 +27,12 @@ class SmsFactory
                 throw new ReflectionException($className . "未实现短信消息接口类");
             }
             return $payChannel->newInstance();
-        } catch (ReflectionException $exception) {
-            log_message('error', '{channel}加载失败', ['channel' => $className,]);
+        } catch (ReflectionException $exc) {
+            log_message('error', '{channel}加载失败，err：{err}',
+                [
+                    'channel' => $className,
+                    'err' => $exc->getMessage()
+                ]);
             return null;
         }
     }
