@@ -30,7 +30,7 @@ class Index
                 'connect_timeout' => 2
             ]
         ];
-        if ($client->ping($params) != true) {
+        if (!$client->ping($params)) {
             return 'Elasticsearch 连接失败';
         }
         $params = [
