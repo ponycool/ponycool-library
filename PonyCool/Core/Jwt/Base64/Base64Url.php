@@ -20,7 +20,7 @@ class Base64Url
      * @param string $input
      * @return bool|string
      */
-    public static function base64UrlDecode(string $input)
+    public static function base64UrlDecode(string $input): bool|string
     {
         $remainder = strlen($input) % 4;
         if ($remainder) {

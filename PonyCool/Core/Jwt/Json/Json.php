@@ -13,12 +13,12 @@ class Json
      * @param array $input
      * @return false|string
      */
-    public static function jsonEncode(array $input)
+    public static function jsonEncode(array $input): bool|string
     {
         $json = json_encode($input);
         if (function_exists('json_last_error') && $errno = json_last_error()) {
             static::handleJsonError($errno);
-        } elseif ($json === 'null' && $input !== null) {
+        } elseif ($json === 'null') {
             throw new DomainException('输入为non-null并且结果为Null');
         }
         return $json;

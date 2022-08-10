@@ -171,7 +171,7 @@ class JwtToken extends Token
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getJti(): ?string
     {
