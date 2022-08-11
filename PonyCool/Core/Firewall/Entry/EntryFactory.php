@@ -9,7 +9,7 @@ class EntryFactory
 {
     protected array $classes;
 
-    public function __construct(array $classes = null)
+    public function __construct(?array $classes = null)
     {
         if (is_null($classes)) {
             $this->classes = [
@@ -34,7 +34,7 @@ class EntryFactory
      * @param string $entry
      * @return bool|mixed
      */
-    public function getEntry(string $entry)
+    public function getEntry(string $entry): mixed
     {
         foreach ($this->classes as $class) {
             if ($class::match($entry)) {
@@ -69,7 +69,7 @@ class EntryFactory
      * @param array $source
      * @param array $dest
      */
-    protected function flattenArray(array $source, array &$dest)
+    protected function flattenArray(array $source, array &$dest): void
     {
         foreach ($source as $item) {
             if (is_array($item)) {

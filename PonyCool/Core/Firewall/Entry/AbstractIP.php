@@ -67,7 +67,7 @@ abstract class AbstractIP extends AbstractEntry
         $ipv6Long = 0;
 
         while ($byte < 16) {
-            $ipv6Long = bcadd(bcmul($ipv6Long, 256), ord($ipN[$byte]));
+            $ipv6Long = bcadd(bcmul($ipv6Long, "256"), (string)ord($ipN[$byte]));
             $byte++;
         }
         return $ipv6Long;
@@ -81,12 +81,10 @@ abstract class AbstractIP extends AbstractEntry
      */
     protected function long2ip(string $long, bool $abbr = true): string
     {
-        switch (static::NB_BITS) {
-            case 128:
-                return $this->long2ip6($long, $abbr);
-            default:
-                return strval(long2ip((int)$long));
-        }
+        return match (static::NB_BITS) {
+            128 => $this->long2ip6($long, $abbr),
+            default => strval(long2ip((int)$long)),
+        };
     }
 
     /**
@@ -100,8 +98,8 @@ abstract class AbstractIP extends AbstractEntry
         $ipv6Arr = array();
 
         for ($part = 0; $part <= 7; $part++) {
-            $hexPart = dechex(bcmod($ipv6long, 65536));
-            $ipv6long = bcdiv($ipv6long, 65536, 0);
+            $hexPart = dechex((int)bcmod($ipv6long, "65536"));
+            $ipv6long = bcdiv($ipv6long, "65536", 0);
             $hexFullPart = str_pad($hexPart, 4, "0", STR_PAD_LEFT);
             $ipv6Arr[] = $hexFullPart;
         }
@@ -219,7 +217,7 @@ abstract class AbstractIP extends AbstractEntry
      */
     protected function IPLongCom(string $long): string
     {
-        return bcsub(bcpow((string)2, (string)static::NB_BITS), bcadd($long, (string)1));
+        return bcsub(bcpow("2", (string)static::NB_BITS), bcadd($long, "1"));
     }
 
     /**
@@ -245,9 +243,9 @@ abstract class AbstractIP extends AbstractEntry
         if (intval($toBase) != 10) {
             $s = '';
             while (bccomp($q, '0', 0) > 0) {
-                $r = intval(bcmod($q, $toBase));
-                $s = base_convert($r, 10, $toBase) . $s;
-                $q = bcdiv($q, $toBase, 0);
+                $r = intval(bcmod($q, (string)$toBase));
+                $s = base_convert((string)$r, 10, $toBase) . $s;
+                $q = bcdiv($q, (string)$toBase, 0);
             }
         } else {
             $s = $q;

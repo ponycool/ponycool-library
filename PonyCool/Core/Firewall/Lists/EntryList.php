@@ -8,7 +8,7 @@ class EntryList
 {
     protected array $entries;
     protected ?bool $matchingResponse;
-    protected array $matchingEntries;
+    protected ?array $matchingEntries;
 
     public function __construct(array $list = array(), bool $trusted = false)
     {
@@ -21,7 +21,7 @@ class EntryList
      * @param string $entry
      * @return bool|null TRUE = allowed, FALSE = rejected, NULL = not handled
      */
-    public function isAllowed(string $entry)
+    public function isAllowed(string $entry): ?bool
     {
         foreach ($this->entries as $item) {
             if ($item->check($entry)) {
