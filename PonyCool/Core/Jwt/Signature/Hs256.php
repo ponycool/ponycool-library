@@ -7,8 +7,7 @@ class Hs256
 {
     public function encrypt(string $secret, string $raw): string
     {
-        $signature = hash_hmac("SHA256", $raw, $secret, true);
-        return (string)$signature;
+        return hash_hmac("SHA256", $raw, $secret, true);
     }
 
     public function decrypt()

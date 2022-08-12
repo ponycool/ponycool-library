@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace PonyCool\Core\Jwt\Token;
 
-use DateTime;
 use PonyCool\Core\Jwt\Json\Json;
 use PonyCool\Core\Jwt\Signature\Signature;
 use PonyCool\Core\Jwt\Base64\Base64Url;

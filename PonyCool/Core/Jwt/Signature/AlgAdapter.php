@@ -109,8 +109,7 @@ class AlgAdapter implements AlgInterface
         ];
         $raw = implode(".", $raw);
         $signature = $alg->encrypt($this->getSecret(), $raw);
-        $signature = Base64Url::base64UrlEncode($signature);
-        return $signature;
+        return Base64Url::base64UrlEncode($signature);
     }
 
     public function decrypt(): array
