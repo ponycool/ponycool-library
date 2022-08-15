@@ -47,12 +47,10 @@ abstract class AbstractIP extends AbstractEntry
      */
     protected function ip2long(string $long): string
     {
-        switch (static::NB_BITS) {
-            case 128:
-                return $this->ip2long6($long);
-            default:
-                return sprintf('%u', ip2long($long));
-        }
+        return match (static::NB_BITS) {
+            128 => $this->ip2long6($long),
+            default => sprintf('%u', ip2long($long)),
+        };
     }
 
     /**
@@ -99,7 +97,7 @@ abstract class AbstractIP extends AbstractEntry
 
         for ($part = 0; $part <= 7; $part++) {
             $hexPart = dechex((int)bcmod($ipv6long, "65536"));
-            $ipv6long = bcdiv($ipv6long, "65536", 0);
+            $ipv6long = bcdiv($ipv6long, "65536");
             $hexFullPart = str_pad($hexPart, 4, "0", STR_PAD_LEFT);
             $ipv6Arr[] = $hexFullPart;
         }
@@ -144,7 +142,7 @@ abstract class AbstractIP extends AbstractEntry
      */
     protected function IPLongAnd(string $long1, string $long2): string
     {
-        // The biggest power of 2 lowest than PHP_INT_MAX
+        // The biggest power of 2 lower than PHP_INT_MAX
         // PHP_INT_MAX == 2 ** (PHP_INT_SIZE * 8 - 1) - 1
         $divisor = 1 << (PHP_INT_SIZE * 8 - 2);
         $result = '0';
@@ -156,8 +154,8 @@ abstract class AbstractIP extends AbstractEntry
             $chunk1 = bcmod($long1, (string)$divisor);
             $chunk2 = bcmod($long2, (string)$divisor);
             // Remove last bits of longs*
-            $long1 = bcdiv($long1, (string)$divisor, 0);
-            $long2 = bcdiv($long2, (string)$divisor, 0);
+            $long1 = bcdiv($long1, (string)$divisor);
+            $long2 = bcdiv($long2, (string)$divisor);
 
             // Compare last bits
             $chunkResult = (int)$chunk1 & (int)$chunk2;
@@ -176,7 +174,7 @@ abstract class AbstractIP extends AbstractEntry
      */
     protected function IPLongOr(string $long1, string $long2): string
     {
-        // The biggest power of 2 lowest than PHP_INT_MAX
+        // The biggest power of 2 lower than PHP_INT_MAX
         // PHP_INT_MAX == 2 ** (PHP_INT_SIZE * 8 - 1) - 1
         $divisor = 1 << (PHP_INT_SIZE * 8 - 2);
         $result = '0';
@@ -188,8 +186,8 @@ abstract class AbstractIP extends AbstractEntry
             $chunk1 = bcmod($long1, (string)$divisor);
             $chunk2 = bcmod($long2, (string)$divisor);
             // Remove last bits of longs*
-            $long1 = bcdiv($long1, (string)$divisor, 0);
-            $long2 = bcdiv($long2, (string)$divisor, 0);
+            $long1 = bcdiv($long1, (string)$divisor);
+            $long2 = bcdiv($long2, (string)$divisor);
 
             // Compare last bits
             $chunkResult = (int)$chunk1 | (int)$chunk2;
@@ -229,7 +227,7 @@ abstract class AbstractIP extends AbstractEntry
     protected function IPLongBaseConvert(string $long, int $fromBase = 10, int $toBase = 36): string
     {
         $str = trim($long);
-        if (intval($fromBase) != 10) {
+        if ($fromBase != 10) {
             $len = strlen($str);
             $q = 0;
             for ($i = 0; $i < $len; $i++) {
@@ -240,12 +238,12 @@ abstract class AbstractIP extends AbstractEntry
             $q = $str;
         }
 
-        if (intval($toBase) != 10) {
+        if ($toBase != 10) {
             $s = '';
             while (bccomp($q, '0', 0) > 0) {
                 $r = intval(bcmod($q, (string)$toBase));
                 $s = base_convert((string)$r, 10, $toBase) . $s;
-                $q = bcdiv($q, (string)$toBase, 0);
+                $q = bcdiv($q, (string)$toBase);
             }
         } else {
             $s = $q;

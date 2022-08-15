@@ -33,7 +33,7 @@ trait IPRange
 
         $range = $this->getRange();
 
-        return (bool)$this->IPLongCompare($range['begin'], $entryLong, '<=') && $this->IPLongCompare($range['end'], $entryLong, '>=');
+        return $this->IPLongCompare($range['begin'], $entryLong, '<=') && $this->IPLongCompare($range['end'], $entryLong, '>=');
     }
 
     protected function getRange(bool $long = true): array
@@ -50,7 +50,7 @@ trait IPRange
 
         if (!$long) {
             $parts['begin'] = $this->long2ip($parts['begin']);
-            $parts['end'] = $this->long2ip($parts['end']);
+            $parts['end'] = $this->long2ip((string)$parts['end']);
         }
 
         return $parts;
@@ -71,7 +71,7 @@ trait IPRange
         $entries = array();
 
         while ($current != $limits['end']) {
-            $current = $this->IpLongAdd($current, (string)1);
+            $current = $this->IpLongAdd($current, "1");
             $entries[] = $this->long2ip($current);
         }
 

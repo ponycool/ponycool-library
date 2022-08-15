@@ -35,7 +35,7 @@ class IPV4Wildcard extends IPV4Range
             return false;
         }
 
-        $entry = str_replace('*', 12, $entry);
+        $entry = str_replace('*', '12', $entry);
 
         return IPV4::match(trim($entry));
     }

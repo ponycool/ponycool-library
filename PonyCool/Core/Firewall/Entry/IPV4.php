@@ -13,7 +13,7 @@ class IPV4 extends AbstractIP
     public static function match(string $entry): bool
     {
         $matchRegex = sprintf(self::$regexModel, self::$digitRegex);
-        return (bool)(preg_match($matchRegex, trim($entry)) && parent::match(trim($entry)));
+        return preg_match($matchRegex, trim($entry)) && parent::match(trim($entry));
     }
 
     public static function matchIp(string $ip): bool

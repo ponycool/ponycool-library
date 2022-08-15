@@ -51,11 +51,11 @@ class SnowFlake
     public function __construct(int $workerId, int $datacenterId, int $sequence = 0)
     {
         if ($workerId > $this->maxWorkerId || $workerId < 0) {
-            throw new Exception("worker Id can't be greater than {$this->maxWorkerId} or less than 0");
+            throw new Exception("worker Id can't be greater than $this->maxWorkerId or less than 0");
         }
 
         if ($datacenterId > $this->maxDatacenterId || $datacenterId < 0) {
-            throw new Exception("datacenter Id can't be greater than {$this->maxDatacenterId} or less than 0");
+            throw new Exception("datacenter Id can't be greater than $this->maxDatacenterId or less than 0");
         }
 
         $this->workerId = $workerId;
@@ -74,7 +74,7 @@ class SnowFlake
 
         if ($timestamp < $this->lastTimestamp) {
             $diffTimestamp = bcsub((string)$this->lastTimestamp, (string)$timestamp);
-            throw new Exception("Clock moved backwards.  Refusing to generate id for {$diffTimestamp} milliseconds");
+            throw new Exception("Clock moved backwards.  Refusing to generate id for $diffTimestamp milliseconds");
         }
 
         if ($this->lastTimestamp == $timestamp) {

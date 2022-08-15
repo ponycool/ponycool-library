@@ -12,7 +12,7 @@ class IPV6 extends AbstractIP
 
     public static function match(string $entry): bool
     {
-        return (bool)(!IPV4::match(trim($entry)) && AbstractIP::match(trim($entry)));
+        return !IPV4::match(trim($entry)) && AbstractIP::match(trim($entry));
     }
 
     public function check(string $entry): bool
@@ -24,7 +24,7 @@ class IPV6 extends AbstractIP
         $entryLong = $this->ip2long($entry);
         $templateLong = $this->ip2long($this->template);
 
-        return (bool)$this->IPLongCompare($entryLong, $templateLong, '=');
+        return $this->IPLongCompare($entryLong, $templateLong, '=');
     }
 
     public static function getFreeDigit(string $entry): string
