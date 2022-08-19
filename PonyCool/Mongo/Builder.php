@@ -206,7 +206,7 @@ class Builder implements OperationsInterface
      * 插入一个文档
      * @param array $document
      * @param array $options
-     * @return mixed|string
+     * @return object
      */
     public function insert(array $document, array $options = []): object
     {

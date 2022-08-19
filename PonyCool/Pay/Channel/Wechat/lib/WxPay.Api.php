@@ -16,7 +16,7 @@ class WxPayApi
 	 * SDK版本号
 	 * @var string
 	 */
-	public static $VERSION = "3.0.10";
+	public static string $VERSION = "3.0.10";
 
 	/**
 	 * 
@@ -238,7 +238,7 @@ class WxPayApi
 		$xml = $inputObj->ToXml();
 		
 		$response = self::postXmlCurl($config, $xml, $url, false, $timeOut);
-		if(substr($response, 0 , 5) == "<xml>"){
+		if(str_starts_with($response, "<xml>")){
 			return "";
 		}
 		return $response;

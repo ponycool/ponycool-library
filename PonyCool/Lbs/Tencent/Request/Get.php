@@ -22,7 +22,7 @@ class Get
      */
     public static function exec(Config $config, string $url): array
     {
-        //如果URL被编码，则先解码
+        // 如果URL被编码，则先解码
         $url = urldecode($url) === $url ? $url : urldecode($url);
 
         if ($config->isSign()) {

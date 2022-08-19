@@ -24,7 +24,7 @@ class Driving
      * @param string|null $fromPoi 起点POI ID，传入后，优先级高于from（坐标）
      * @param int|null $heading 在起点位置时的车头方向，数值型，取值范围0至360（0度代表正北，顺时针一周360度）
      * @param int|null $speed 速度，单位：米/秒，默认3。 当速度低于1.39米/秒时，heading将被忽略
-     * @param int $accuracy 定位精度，单位：米，取>0数值，默认5。
+     * @param int $accuracy 定位精度，单位：米，取>0的数值，默认5。
      * @param int $roadType 起点道路类型
      * @param string|null $fromTrack 起点轨迹
      * @param string|null $toPoi 终点POI ID
