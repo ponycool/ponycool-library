@@ -169,9 +169,7 @@ class Client
      */
     public function setPullTimeout(int $pullTimeout): Client
     {
-        if ($pullTimeout >= 1 || $pullTimeout <= 300) {
-            $this->pullTimeout = $pullTimeout;
-        }
+        $this->pullTimeout = $pullTimeout;
         return $this;
     }
 
@@ -189,9 +187,7 @@ class Client
      */
     public function setIntervalTimeout(int $intervalTimeout): Client
     {
-        if ($intervalTimeout >= 1 || $intervalTimeout <= 300) {
-            $this->intervalTimeout = $intervalTimeout;
-        }
+        $this->intervalTimeout = $intervalTimeout;
         return $this;
     }
 
@@ -415,7 +411,7 @@ class Client
      * @param null $callback
      * @throws Exception
      */
-    protected function _listenChange(&$ch, $callback = null): void
+    protected function _listenChange($ch, $callback = null): void
     {
         $base_url = rtrim($this->configServer, '/') . '/notifications/v2?';
         $params = [];
