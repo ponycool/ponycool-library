@@ -289,6 +289,11 @@ class Client
         } catch (Exception $e) {
             throw new Exception($e);
         }
+
+        if (!file_exists($this->savePath)) {
+            mkdir($this->savePath);
+        }
+
         $base_api = rtrim($this->configServer, '/') . '/configs/' . $this->appId . '/' . $this->cluster . '/';
         $api = $base_api . $namespaceName;
 
