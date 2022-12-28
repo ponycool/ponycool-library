@@ -1,3 +1,3 @@
 .PHONY: sync
 sync:
-	./sh/sync.sh
+	./scripts/sync.sh
