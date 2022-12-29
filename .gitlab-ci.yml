@@ -8,3 +8,6 @@ test:
     - composer install
   script:
     - make test
+  cache:
+    paths:
+      - vendor/
