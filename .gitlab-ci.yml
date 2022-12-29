@@ -5,6 +5,7 @@ test:
   image: ponycool/php-deploy-8.1:latest
   before_script:
     - apt install -y make
+    - composer config -g repo.packagist composer https://packagist.phpcomposer.com
     - composer install
   script:
     - make test
