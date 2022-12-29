@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit colors="true"
+         convertErrorsToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false">
+    <testsuites>
+        <testsuite name="unit">
+            <directory phpVersion="8.0.0" phpVersionOperator=">=">tests/Jwt</directory>
+        </testsuite>
+    </testsuites>
+    <!-- 测试日志 -->
+    <logging>
+        <!-- <junit outputFile="junit.xml"/>-->
+        <!-- <teamcity outputFile="teamcity.txt"/>-->
+        <!-- <testdoxHtml outputFile="testdox.html"/>-->
+        <!-- <testdoxText outputFile="testdox.txt"/>-->
+        <!-- <testdoxXml outputFile="testdox.xml"/>-->
+        <!-- <text outputFile="logfile.txt"/>-->
+    </logging>
+    <!-- PHP的环境变量 -->
+    <php>
+        <env name="APP_ENV" value="testing"/>
+    </php>
+</phpunit>

@@ -209,8 +209,7 @@ class Pay implements PayInterface
             }
         }
 
-        $buff = trim($buff, "&");
-        return $buff;
+        return trim($buff, "&");
     }
 
     /**

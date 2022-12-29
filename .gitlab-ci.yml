@@ -1,0 +1,9 @@
+stages:
+  - test
+
+test:
+  image: ponycool/php-deploy-8.1:latest
+  before_script:
+    - apt install -y make
+  script:
+    - make test
