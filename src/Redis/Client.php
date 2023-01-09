@@ -84,6 +84,9 @@ class Client implements OperationsInterface
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function ping(): bool
     {
         try {

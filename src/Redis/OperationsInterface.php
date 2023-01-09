@@ -13,6 +13,10 @@ namespace PonyCool\Redis;
 interface OperationsInterface
 {
 
+    /**
+     * 检测
+     * @return bool
+     */
     public function ping(): bool;
 
     /**
