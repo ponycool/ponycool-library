@@ -11,6 +11,7 @@ namespace PonyCool\Redis;
 
 use Redis;
 use Exception;
+use RedisException;
 
 
 class Builder implements OperationsInterface
@@ -83,11 +84,21 @@ class Builder implements OperationsInterface
      * 选择数据库
      * @param int $db
      * @return $this
+     * @throws RedisException
      */
     public function selectDb(int $db): Builder
     {
         $this->connect->select($db);
         return $this;
+    }
+
+    public function ping(): bool
+    {
+        try {
+            return $this->connect->ping();
+        } catch (RedisException) {
+            return false;
+        }
     }
 
     /**
@@ -96,6 +107,7 @@ class Builder implements OperationsInterface
      * @param $data
      * @param int|null $ttl
      * @return bool
+     * @throws RedisException
      */
     public function set(string $key, $data, ?int $ttl = null): bool
     {
@@ -109,8 +121,9 @@ class Builder implements OperationsInterface
      * @param string $hashKey
      * @param string $value
      * @return bool|int
+     * @throws RedisException
      */
-    public function hSet(string $key, string $hashKey, string $value)
+    public function hSet(string $key, string $hashKey, string $value): bool|int
     {
         $db = $this->connect;
         return $db->hSet($key, $hashKey, $value);
@@ -121,6 +134,7 @@ class Builder implements OperationsInterface
      * @param string $key
      * @param array $hashKeys
      * @return bool
+     * @throws RedisException
      */
     public function hMSet(string $key, array $hashKeys): bool
     {
@@ -133,6 +147,7 @@ class Builder implements OperationsInterface
      * @param string $key
      * @param int $ttl
      * @return bool
+     * @throws RedisException
      */
     public function expire(string $key, int $ttl): bool
     {
@@ -145,6 +160,7 @@ class Builder implements OperationsInterface
      * @param string $key
      * @param int $ttl
      * @return bool
+     * @throws RedisException
      */
     public function pExpire(string $key, int $ttl): bool
     {
@@ -157,6 +173,7 @@ class Builder implements OperationsInterface
      * @param string $key
      * @param int $timestamp
      * @return bool
+     * @throws RedisException
      */
     public function expireAt(string $key, int $timestamp): bool
     {
@@ -169,6 +186,7 @@ class Builder implements OperationsInterface
      * @param string $key
      * @param int $timestamp
      * @return bool
+     * @throws RedisException
      */
     public function pExpireAt(string $key, int $timestamp): bool
     {
@@ -179,9 +197,10 @@ class Builder implements OperationsInterface
     /**
      * 获取指定 key 的值
      * @param string $key
-     * @return false|mixed|string
+     * @return mixed
+     * @throws RedisException
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         $db = $this->connect;
         return $db->get($key);
@@ -193,6 +212,7 @@ class Builder implements OperationsInterface
      * @param int $start
      * @param int $end
      * @return string
+     * @throws RedisException
      */
     public function getRange(string $key, int $start, int $end): string
     {
@@ -204,9 +224,10 @@ class Builder implements OperationsInterface
      * 设置指定 key 的值，并返回 key 的旧值
      * @param string $key
      * @param string $value
-     * @return mixed|string
+     * @return mixed
+     * @throws RedisException
      */
-    public function getSet(string $key, string $value)
+    public function getSet(string $key, string $value): mixed
     {
         $db = $this->connect;
         return $db->getSet($key, $value);
@@ -216,8 +237,9 @@ class Builder implements OperationsInterface
      * 以秒为单位返回 key 的剩余过期时间
      * @param string $key
      * @return bool|int
+     * @throws RedisException
      */
-    public function getTtl(string $key)
+    public function getTtl(string $key): bool|int
     {
         $db = $this->connect;
         return $db->ttl($key);
@@ -227,8 +249,9 @@ class Builder implements OperationsInterface
      * 以毫秒为单位返回 key 的剩余的过期时间
      * @param string $key
      * @return bool|int
+     * @throws RedisException
      */
-    public function getPTtl(string $key)
+    public function getPTtl(string $key): bool|int
     {
         $db = $this->connect;
         return $db->pttl($key);
@@ -237,6 +260,7 @@ class Builder implements OperationsInterface
     /**
      * 从当前数据库中随机返回一个 key
      * @return string
+     * @throws RedisException
      */
     public function getRandomKey(): string
     {
@@ -248,6 +272,7 @@ class Builder implements OperationsInterface
      * 返回 key 所储存的值的类型
      * @param string $key
      * @return int
+     * @throws RedisException
      */
     public function getType(string $key): int
     {
@@ -259,6 +284,7 @@ class Builder implements OperationsInterface
      * 查找所有符合给定模式 pattern 的 key
      * @param string $pattern
      * @return array
+     * @throws RedisException
      */
     public function keys(string $pattern): array
     {
@@ -270,6 +296,7 @@ class Builder implements OperationsInterface
      * 返回哈希表所有的值
      * @param string $key
      * @return array
+     * @throws RedisException
      */
     public function hVals(string $key): array
     {
@@ -281,6 +308,7 @@ class Builder implements OperationsInterface
      * 检查给定 key 是否存在
      * @param string $key
      * @return bool
+     * @throws RedisException
      */
     public function exists(string $key): bool
     {
@@ -293,6 +321,7 @@ class Builder implements OperationsInterface
      * @param string $key
      * @param string $hashKey
      * @return bool
+     * @throws RedisException
      */
     public function hExists(string $key, string $hashKey): bool
     {
@@ -305,6 +334,7 @@ class Builder implements OperationsInterface
      * @param string $srcKey
      * @param string $dstKey
      * @return bool
+     * @throws RedisException
      */
     public function rename(string $srcKey, string $dstKey): bool
     {
@@ -317,6 +347,7 @@ class Builder implements OperationsInterface
      * @param string $srcKey
      * @param string $dstKey
      * @return bool
+     * @throws RedisException
      */
     public function renameNx(string $srcKey, string $dstKey): bool
     {
@@ -328,6 +359,7 @@ class Builder implements OperationsInterface
      * 将 key 中储存的数字值增一
      * @param string $key
      * @return int
+     * @throws RedisException
      */
     public function incr(string $key): int
     {
@@ -340,6 +372,7 @@ class Builder implements OperationsInterface
      * @param string $key
      * @param int $value
      * @return int
+     * @throws RedisException
      */
     public function incrBy(string $key, int $value): int
     {
@@ -352,6 +385,7 @@ class Builder implements OperationsInterface
      * @param string $key
      * @param float $value
      * @return float
+     * @throws RedisException
      */
     public function incrByFloat(string $key, float $value): float
     {
@@ -363,6 +397,7 @@ class Builder implements OperationsInterface
      * 将 key 中储存的数字值减一
      * @param string $key
      * @return int
+     * @throws RedisException
      */
     public function decr(string $key): int
     {
@@ -375,6 +410,7 @@ class Builder implements OperationsInterface
      * @param string $key
      * @param int $value
      * @return int
+     * @throws RedisException
      */
     public function decrBy(string $key, int $value): int
     {
@@ -387,6 +423,7 @@ class Builder implements OperationsInterface
      * @param string $key
      * @param $value
      * @return int
+     * @throws RedisException
      */
     public function append(string $key, $value): int
     {
@@ -399,6 +436,7 @@ class Builder implements OperationsInterface
      * @param string $key
      * @param int $dbIndex
      * @return bool
+     * @throws RedisException
      */
     public function move(string $key, int $dbIndex): bool
     {
@@ -410,6 +448,7 @@ class Builder implements OperationsInterface
      * 移除给定 key 的过期时间，使得 key 永不过期
      * @param string $key
      * @return bool
+     * @throws RedisException
      */
     public function persist(string $key): bool
     {
@@ -421,6 +460,7 @@ class Builder implements OperationsInterface
      * 删除已存在的键
      * @param string $key
      * @return int
+     * @throws RedisException
      */
     public function del(string $key): int
     {
@@ -431,6 +471,7 @@ class Builder implements OperationsInterface
     /**
      * 清空当前数据库中的所有 key
      * @return bool
+     * @throws RedisException
      */
     public function clean(): bool
     {
@@ -441,6 +482,7 @@ class Builder implements OperationsInterface
     /**
      * 清空所有数据库中的所有 key
      * @return bool
+     * @throws RedisException
      */
     public function cleanAll(): bool
     {
@@ -451,6 +493,7 @@ class Builder implements OperationsInterface
     /**
      * 数据备份
      * @return bool
+     * @throws RedisException
      */
     public function save(): bool
     {

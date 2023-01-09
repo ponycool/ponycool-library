@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace PonyCool\Redis;
 
 use Exception;
+use RedisException;
 
 
 class Client implements OperationsInterface
@@ -83,6 +84,16 @@ class Client implements OperationsInterface
         return $this;
     }
 
+    public function ping(): bool
+    {
+        try {
+            $builder = $this->getBuilder();
+            return $builder->ping();
+        } catch (Exception) {
+            return false;
+        }
+    }
+
     /**
      * 保存键值
      * @throws Exception
@@ -101,7 +112,7 @@ class Client implements OperationsInterface
      * @return bool|int
      * @throws Exception
      */
-    public function hSet(string $key, string $hashKey, string $value)
+    public function hSet(string $key, string $hashKey, string $value): bool|int
     {
         $builder = $this->getBuilder();
         return $builder->hSet($key, $hashKey, $value);
@@ -174,12 +185,17 @@ class Client implements OperationsInterface
 
     /**
      * 获取指定 key 的值
-     * @throws Exception
+     * @param string $key
+     * @return mixed
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
-        $builder = $this->getBuilder();
-        return $builder->get($key);
+        try {
+            $builder = $this->getBuilder();
+            return $builder->get($key);
+        } catch (Exception) {
+            return false;
+        }
     }
 
     /**
@@ -203,7 +219,7 @@ class Client implements OperationsInterface
      * @return mixed|string
      * @throws Exception
      */
-    public function getSet(string $key, string $value)
+    public function getSet(string $key, string $value): mixed
     {
         $builder = $this->getBuilder();
         return $builder->getSet($key, $value);
@@ -215,7 +231,7 @@ class Client implements OperationsInterface
      * @return bool|int
      * @throws Exception
      */
-    public function getTtl(string $key)
+    public function getTtl(string $key): bool|int
     {
         $builder = $this->getBuilder();
         return $builder->getTtl($key);
@@ -227,7 +243,7 @@ class Client implements OperationsInterface
      * @return bool|int
      * @throws Exception
      */
-    public function getPTtl(string $key)
+    public function getPTtl(string $key): bool|int
     {
         $builder = $this->getBuilder();
         return $builder->getPTtl($key);

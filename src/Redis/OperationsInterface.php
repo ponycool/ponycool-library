@@ -13,6 +13,8 @@ namespace PonyCool\Redis;
 interface OperationsInterface
 {
 
+    public function ping(): bool;
+
     /**
      * 保存键值
      * @param string $key
@@ -27,9 +29,9 @@ interface OperationsInterface
      * @param string $key
      * @param string $hashKey
      * @param string $value
-     * @return mixed
+     * @return bool|int
      */
-    public function hSet(string $key, string $hashKey, string $value);
+    public function hSet(string $key, string $hashKey, string $value): bool|int;
 
     /**
      * 同时将多个 field-value (字段-值)对设置到哈希表中
@@ -76,7 +78,7 @@ interface OperationsInterface
      * @param string $key
      * @return mixed
      */
-    public function get(string $key);
+    public function get(string $key): mixed;
 
     /**
      * 获取存储在指定 key 中字符串的子字符串
@@ -93,21 +95,21 @@ interface OperationsInterface
      * @param string $value
      * @return mixed
      */
-    public function getSet(string $key, string $value);
+    public function getSet(string $key, string $value): mixed;
 
     /**
      * 以秒为单位返回 key 的剩余过期时间
      * @param string $key
-     * @return mixed
+     * @return bool|int
      */
-    public function getTtl(string $key);
+    public function getTtl(string $key): bool|int;
 
     /**
      * 以毫秒为单位返回 key 的剩余的过期时间
      * @param string $key
-     * @return mixed
+     * @return bool|int
      */
-    public function getPTtl(string $key);
+    public function getPTtl(string $key): bool|int;
 
     /**
      * 从当前数据库中随机返回一个 key

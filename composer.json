@@ -4,7 +4,8 @@
   "type": "library",
   "homepage": "https://ponycool.com",
   "require": {
-    "php": ">=8.0"
+    "php": ">=8.0",
+    "ext-redis": "*"
   },
   "license": "MIT",
   "authors": [
