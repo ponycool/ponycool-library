@@ -258,4 +258,152 @@ interface OperationsInterface
      * @return bool
      */
     public function save(): bool;
+
+    /**
+     * 移出并获取列表的第一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止
+     * @param string $key
+     * @param int $timeout
+     * @return array
+     */
+    public function blPop(string $key, int $timeout): array;
+
+    /**
+     * 移出并获取列表的最后一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止
+     * @param string $key
+     * @param int $timeout
+     * @return array
+     */
+    public function brPop(string $key, int $timeout): array;
+
+
+    /**
+     * 从列表中弹出一个值，将弹出的元素插入到另外一个列表中并返回它； 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止
+     * @param string $srcKey
+     * @param string $dstKey
+     * @param int $timeout
+     * @return mixed
+     */
+    public function bRPopLPush(string $srcKey, string $dstKey, int $timeout): mixed;
+
+    /**
+     * 通过索引获取列表中的元素
+     * @param string $key
+     * @param int $index
+     * @return mixed
+     */
+    public function lIndex(string $key, int $index): mixed;
+
+    /**
+     * 在列表的元素前或者后插入元素
+     * 将值 value 插入到列表 key 当中，位于值 pivot 之前或之后
+     * @param string $key
+     * @param string $position BEFORE|AFTER
+     * @param mixed $pivot
+     * @param mixed $value
+     * @return false|int
+     */
+    public function lInsert(string $key, string $position, mixed $pivot, mixed $value): false|int;
+
+
+    /**
+     * 获取列表长度
+     * @param string $key
+     * @return bool|int
+     */
+    public function lLen(string $key): bool|int;
+
+    /**
+     * 移出并获取列表的第一个元素
+     * @param string $key
+     * @return mixed
+     */
+    public function lPop(string $key): mixed;
+
+    /**
+     * 将一个或多个值插入到列表头部
+     * @param string $key
+     * @param mixed ...$value
+     * @return false|int
+     */
+    public function lPush(string $key, mixed ...$value): false|int;
+
+    /**
+     * 将一个值插入到已存在的列表头部
+     * @param string $key
+     * @param mixed $value
+     * @return false|int
+     */
+    public function lPushX(string $key, mixed $value): false|int;
+
+    /**
+     * 获取列表指定范围内的元素
+     * @param string $key
+     * @param int $start
+     * @param int $end
+     * @return array
+     */
+    public function lRange(string $key, int $start, int $end): array;
+
+    /**
+     * 移除列表元素
+     * Redis Lrem 根据参数 COUNT 的值，移除列表中与参数 VALUE 相等的元素。
+     * COUNT 的值可以是以下几种：
+     * count > 0 : 从表头开始向表尾搜索，移除与 VALUE 相等的元素，数量为 COUNT 。
+     * count < 0 : 从表尾开始向表头搜索，移除与 VALUE 相等的元素，数量为 COUNT 的绝对值
+     * count = 0 : 移除表中所有与 VALUE 相等的值。
+     * @param string $key
+     * @param string $value
+     * @param int $count
+     * @return bool|int
+     */
+    public function lRem(string $key, string $value, int $count): bool|int;
+
+    /**
+     * 通过索引设置列表元素的值
+     * @param string $key
+     * @param int $index
+     * @param string $value
+     * @return bool
+     */
+    public function lSet(string $key, int $index, string $value): bool;
+
+    /**
+     * 对一个列表进行修剪(trim)，就是说，让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。
+     * @param string $key
+     * @param int $start
+     * @param int $stop
+     * @return array|false
+     */
+    public function lTrim(string $key, int $start, int $stop): array|false;
+
+    /**
+     * 移除列表的最后一个元素，返回值为移除的元素
+     * @param string $key
+     * @return mixed
+     */
+    public function rPop(string $key): mixed;
+
+    /**
+     * 移除列表的最后一个元素，并将该元素添加到另一个列表并返回
+     * @param string $srcKey
+     * @param string $dstKey
+     * @return mixed
+     */
+    public function rPopLPush(string $srcKey, string $dstKey): mixed;
+
+    /**
+     * 在列表中添加一个或多个值到列表尾部
+     * @param string $key
+     * @param mixed ...$value
+     * @return false|int
+     */
+    public function rPush(string $key, mixed ...$value): false|int;
+
+    /**
+     * 为已存在的列表添加值
+     * @param string $key
+     * @param mixed $value
+     * @return false|int
+     */
+    public function rPushX(string $key, mixed $value): false|int;
 }
