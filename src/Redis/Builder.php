@@ -720,7 +720,7 @@ class Builder implements OperationsInterface
     public function rPush(string $key, mixed ...$value): false|int
     {
         $db = $this->connect;
-        return $db->rPush($key, $value);
+        return $db->rPush($key, ...$value);
     }
 
     /**

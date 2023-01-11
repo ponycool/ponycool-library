@@ -711,7 +711,7 @@ class Client implements OperationsInterface
     public function rPush(string $key, mixed ...$value): false|int
     {
         $builder = $this->getBuilder();
-        return $builder->rPush($key, $value);
+        return $builder->rPush($key, ...$value);
     }
 
     /**
