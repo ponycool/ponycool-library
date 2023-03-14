@@ -5,7 +5,8 @@
   "homepage": "https://ponycool.com",
   "require": {
     "php": ">=8.0",
-    "ext-redis": "*"
+    "ext-redis": "*",
+    "aliyuncs/oss-sdk-php": "^2.6"
   },
   "license": "MIT",
   "authors": [

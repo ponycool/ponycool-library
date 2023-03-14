@@ -34,4 +34,10 @@ interface ObjectStorageInterface
      * @return bool
      */
     public function download(string $file, string $savePath): bool;
+
+    /**
+     * 获取直传签名
+     * @return string
+     */
+    public function getSignature(): string;
 }

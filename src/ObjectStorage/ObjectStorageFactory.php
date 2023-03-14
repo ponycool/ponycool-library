@@ -19,9 +19,10 @@ class ObjectStorageFactory
      * ObjectStorage工厂
      * @param string $source
      * @param ObjectStorage $objectStorage
-     * @return object|null
+     * @return object
+     * @throws Exception
      */
-    public static function factory(string $source, ObjectStorage $objectStorage): ?object
+    public static function factory(string $source, ObjectStorage $objectStorage): object
     {
         try {
             if ($objectStorage->check() !== true) {
@@ -32,14 +33,9 @@ class ObjectStorageFactory
                 throw new ReflectionException($source . "未实现ObjectStorage接口类");
             }
             return $os->newInstance($objectStorage);
-        } catch (ReflectionException | Exception $e) {
-            log_message('error', '{os}加载失败，error：{error}',
-                [
-                    'os' => $source,
-                    'error' => $e->getMessage()
-                ]
-            );
-            return null;
+        } catch (ReflectionException|Exception $e) {
+            $message = sprintf('%s加载失败，error：%s', $source, $e->getMessage());
+            throw new Exception($message);
         }
     }
 }

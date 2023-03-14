@@ -19,9 +19,20 @@ class ObjectStorage
     protected string $bucket;
     protected ?string $domain;
 
+    // 上传回调服务器的URL，只用于前端签名上传
+    protected ?string $callbackUrl;
+    // 上传时指定的前缀
+    protected ?string $prefix;
+    // 设置该policy超时时间是30s. 即这个policy过了这个有效时间，将不能访问，用于前端签名上传
+    protected int $signatureExpires;
+
     public function __construct()
     {
-        $this->setDomain(null);
+        // 初始化属性
+        $this->setDomain(null)
+            ->setCallbackUrl(null)
+            ->setPrefix(null)
+            ->setSignatureExpires(30);
     }
 
     /**
@@ -115,8 +126,63 @@ class ObjectStorage
     }
 
     /**
+     * @return string|null
+     */
+    public function getCallbackUrl(): ?string
+    {
+        return $this->callbackUrl;
+    }
+
+    /**
+     * @param string|null $callbackUrl
+     * @return ObjectStorage
+     */
+    public function setCallbackUrl(?string $callbackUrl): ObjectStorage
+    {
+        $this->callbackUrl = $callbackUrl;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPrefix(): ?string
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * @param string|null $prefix
+     * @return ObjectStorage
+     */
+    public function setPrefix(?string $prefix): ObjectStorage
+    {
+        $this->prefix = $prefix;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSignatureExpires(): int
+    {
+        return $this->signatureExpires;
+    }
+
+    /**
+     * @param int $signatureExpires
+     * @return ObjectStorage
+     */
+    public function setSignatureExpires(int $signatureExpires): ObjectStorage
+    {
+        $this->signatureExpires = $signatureExpires;
+        return $this;
+    }
+
+    /**
      * 检查配置
      * @return bool
+     * @throws Exception
      */
     public function check(): bool
     {
@@ -135,11 +201,8 @@ class ObjectStorage
             }
             return true;
         } catch (Exception $e) {
-            log_message(
-                'error',
-                'Object Storage 配置无效，error：{error}',
-                ['error' => $e->getMessage()]);
-            return false;
+            $message = sprintf('Object Storage 配置无效，%s', $e->getMessage());
+            throw new Exception($message);
         }
     }
 }
