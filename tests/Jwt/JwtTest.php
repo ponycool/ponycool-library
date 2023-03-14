@@ -6,7 +6,6 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use PonyCool\Core\Jwt\Jwt as JwtLib;
 use ReflectionException;
-use function PHPUnit\Framework\assertEquals;
 
 /**
  * Created by PhpStorm
@@ -39,7 +38,7 @@ class JwtTest extends TestCase
             $token = $jwt->getToken($secret, $header, $payload);
             $this->assertIsString($token);
         } catch (ReflectionException|Exception $exc) {
-            assertEquals(0, $exc->getCode(), $exc->getMessage());
+            self::assertEquals(0, $exc->getCode(), $exc->getMessage());
         }
     }
 }
