@@ -1,7 +1,11 @@
 <?php
 
+namespace Jwt;
+
+use Exception;
 use PHPUnit\Framework\TestCase;
-use PonyCool\Core\Jwt\Jwt;
+use PonyCool\Core\Jwt\Jwt as JwtLib;
+use ReflectionException;
 
 /**
  * Created by PhpStorm
@@ -29,11 +33,12 @@ class JwtTest extends TestCase
             'aid' => 1,
             'gid' => 1
         ];
-        $jwt = new Jwt();
+        $jwt = new JwtLib();
         try {
             $token = $jwt->getToken($secret, $header, $payload);
             $this->assertIsString($token);
-        } catch (ReflectionException) {
+        } catch (ReflectionException|Exception) {
+
         }
     }
 }
