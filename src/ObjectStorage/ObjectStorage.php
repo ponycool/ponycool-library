@@ -34,10 +34,12 @@ class ObjectStorage
 
     /**
      * @param string $access_key
+     * @return ObjectStorage
      */
-    public function setAccessKey(string $access_key): void
+    public function setAccessKey(string $access_key): ObjectStorage
     {
         $this->access_key = $access_key;
+        return $this;
     }
 
     /**
@@ -50,10 +52,12 @@ class ObjectStorage
 
     /**
      * @param string $secret
+     * @return ObjectStorage
      */
-    public function setSecret(string $secret): void
+    public function setSecret(string $secret): ObjectStorage
     {
         $this->secret = $secret;
+        return $this;
     }
 
     /**
@@ -66,10 +70,12 @@ class ObjectStorage
 
     /**
      * @param string $region
+     * @return ObjectStorage
      */
-    public function setRegion(string $region): void
+    public function setRegion(string $region): ObjectStorage
     {
         $this->region = $region;
+        return $this;
     }
 
     /**
@@ -82,10 +88,12 @@ class ObjectStorage
 
     /**
      * @param string $bucket
+     * @return ObjectStorage
      */
-    public function setBucket(string $bucket): void
+    public function setBucket(string $bucket): ObjectStorage
     {
         $this->bucket = $bucket;
+        return $this;
     }
 
     /**
@@ -98,10 +106,12 @@ class ObjectStorage
 
     /**
      * @param string|null $domain
+     * @return ObjectStorage
      */
-    public function setDomain(?string $domain): void
+    public function setDomain(?string $domain): ObjectStorage
     {
         $this->domain = $domain;
+        return $this;
     }
 
     /**
