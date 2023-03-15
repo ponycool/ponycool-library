@@ -106,7 +106,7 @@ class Oss implements ObjectStorageInterface
         $conditions[] = $condition;
 
         // 表示用户上传的数据，必须是以$dir开始，不然上传会失败，这一步不是必须项，只是为了安全起见，防止用户通过policy上传到别人的目录。
-        $dir = $this->os->getPrefix() ?: '/';
+        $dir = $this->os->getPrefix() ?: '';
         $start = [
             0 => 'starts-with',
             1 => '$key',
