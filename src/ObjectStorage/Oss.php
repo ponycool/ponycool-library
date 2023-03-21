@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace PonyCool\ObjectStorage;
 
 use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use OSS\OssClient;
 use OSS\Core\OssException;
 
@@ -142,5 +144,82 @@ class Oss implements ObjectStorageInterface
     private function gmtIso8601(?int $time): string
     {
         return str_replace('+00:00', '.000Z', gmdate('c', $time));
+    }
+
+
+    /**
+     * 获取公钥
+     * @param string $url 获取公钥的URL
+     * @return string|bool
+     */
+    public function getPublicKey(string $url): string|bool
+    {
+        $client = new Client();
+        try {
+            $res = $client->request('GET', $url);
+            return $res->getBody()->getContents();
+        } catch (GuzzleException) {
+            return false;
+        }
+    }
+
+    /**
+     * 直传回调验签
+     * @return bool
+     */
+    public function verifyCallbackSignature(): bool
+    {
+        // 获取OSS的签名header和公钥url header
+        $authorizationBase64 = "";
+        $pubKeyUrlBase64 = "";
+
+        // 注意：如果要使用HTTP_AUTHORIZATION头，你需要先在apache或者nginx中设置rewrite，以apache为例，修改
+        // 配置文件以你的apache安装路径为准，在DirectoryIndex index.php这行下面增加以下两行
+        // RewriteEngine On
+        // RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization},last]
+
+        if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $authorizationBase64 = $_SERVER['HTTP_AUTHORIZATION'];
+        }
+        if (isset($_SERVER['HTTP_X_OSS_PUB_KEY_URL'])) {
+            $pubKeyUrlBase64 = $_SERVER['HTTP_X_OSS_PUB_KEY_URL'];
+        }
+
+        if ($authorizationBase64 == '' || $pubKeyUrlBase64 == '') {
+            return false;
+        }
+
+        // 获取OSS的签名
+        $authorization = base64_decode($authorizationBase64);
+
+        // 获取公钥
+        $pubKeyUrl = base64_decode($pubKeyUrlBase64);
+
+        $pubKey = $this->getPublicKey($pubKeyUrl);
+        if ($pubKey === false) {
+            return false;
+        }
+        if ($pubKey == "") {
+            return false;
+        }
+
+        // 获取回调body
+        $body = file_get_contents('php://input');
+
+        // 拼接待签名字符串
+        $path = $_SERVER['REQUEST_URI'];
+        $pos = strpos($path, '?');
+        if ($pos === false) {
+            $authStr = urldecode($path) . "\n" . $body;
+        } else {
+            $authStr = urldecode(substr($path, 0, $pos)) . substr($path, $pos, strlen($path) - $pos) . "\n" . $body;
+        }
+        // 6.验证签名
+        $ok = openssl_verify($authStr, $authorization, $pubKey, OPENSSL_ALGO_MD5);
+        if ($ok == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

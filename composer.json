@@ -6,7 +6,9 @@
   "require": {
     "php": ">=8.0",
     "ext-redis": "*",
-    "aliyuncs/oss-sdk-php": "^2.6"
+    "aliyuncs/oss-sdk-php": "^2.6",
+    "guzzlehttp/guzzle": "^7.5",
+    "ext-openssl": "*"
   },
   "license": "MIT",
   "authors": [
