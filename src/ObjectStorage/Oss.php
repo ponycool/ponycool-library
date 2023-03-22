@@ -70,10 +70,11 @@ class Oss implements ObjectStorageInterface
 
     /**
      * 获取直传签名
+     * @param array|null $params 自定义参数
      * @return string
      * @throws Exception
      */
-    public function getSignature(): string
+    public function getSignature(?array $params): string
     {
         if (is_null($this->os->getCallbackUrl())) {
             throw new Exception('未正确设置上传回调服务器的URL');
@@ -86,9 +87,14 @@ class Oss implements ObjectStorageInterface
         $host = $this->os->getDomain();
         // 上传回调服务器的URL
         $callbackUrl = $this->os->getCallbackUrl();
+        // 回调参数
+        $callbackBody = 'filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}';
+        if (!is_null($params)) {
+            $callbackBody .= '&' . http_build_query($params);
+        }
         $callbackParams = [
             'callbackUrl' => $callbackUrl,
-            'callbackBody' => 'filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}',
+            'callbackBody' => $callbackBody,
             'callbackBodyType' => 'application/x-www-form-urlencoded'
         ];
         $callbackStr = json_encode($callbackParams);

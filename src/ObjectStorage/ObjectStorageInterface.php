@@ -37,7 +37,8 @@ interface ObjectStorageInterface
 
     /**
      * 获取直传签名
+     * @param array|null $params 自定义参数
      * @return string
      */
-    public function getSignature(): string;
+    public function getSignature(?array $params): string;
 }
