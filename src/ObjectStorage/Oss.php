@@ -74,7 +74,7 @@ class Oss implements ObjectStorageInterface
      * @return string
      * @throws Exception
      */
-    public function getSignature(?array $params): string
+    public function getSignature(?array $params = null): string
     {
         if (is_null($this->os->getCallbackUrl())) {
             throw new Exception('未正确设置上传回调服务器的URL');
