@@ -3,333 +3,21 @@ declare(strict_types=1);
 
 namespace PonyCool\Core\Jwt\Token;
 
+use Exception;
 use PonyCool\Core\Jwt\Json\Json;
 use PonyCool\Core\Jwt\Signature\Signature;
 use PonyCool\Core\Jwt\Base64\Base64Url;
 use PonyCool\Core\Jwt\Validation\ValidationStrategy;
-use PonyCool\Core\Jwt\Exception\{TokenException,
-    ValueException,
-    ExpiredException,
-    ArgumentException,
-    SignatureException,
-    MethodCallException,
-    BeforeValidException
-};
-use ReflectionException;
+use PonyCool\Core\Jwt\Exception\TokenException;
+use PonyCool\Core\Jwt\Exception\ValueException;
+use PonyCool\Core\Jwt\Exception\ExpiredException;
+use PonyCool\Core\Jwt\Exception\ArgumentException;
+use PonyCool\Core\Jwt\Exception\SignatureException;
+use PonyCool\Core\Jwt\Exception\MethodCallException;
+use PonyCool\Core\Jwt\Exception\BeforeValidException;
 
 class JwtToken extends Token
 {
-    /**
-     * @return string
-     */
-    public function getSecret(): string
-    {
-        return $this->secret;
-    }
-
-    /**
-     * @param string $secret
-     */
-    public function setSecret(string $secret): void
-    {
-        $this->secret = $secret;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAlg(): string
-    {
-
-        return $this->alg ?? 'HS256';
-    }
-
-    /**
-     * @param string $alg
-     */
-    public function setAlg(string $alg): void
-    {
-        $this->alg = $alg;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTyp(): string
-    {
-        return $this->typ ?? 'JWT';
-    }
-
-    /**
-     * @param string $typ
-     */
-    public function setTyp(string $typ): void
-    {
-        $this->typ = $typ;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getIss(): string
-    {
-        $issuer = 'PonyCool';
-        return $this->iss ?? $issuer;
-    }
-
-    /**
-     * @param string $iss
-     */
-    public function setIss(string $iss): void
-    {
-        $this->iss = $iss;
-    }
-
-    /**
-     * 过期时间，默认为签发时间+2小时
-     * @return int
-     */
-    public function getExp(): int
-    {
-        return $this->exp ?? strtotime("+2 hours");
-    }
-
-    /**
-     * @param int $exp
-     */
-    public function setExp(int $exp): void
-    {
-        $this->exp = $exp;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSub(): string
-    {
-        $subject = 'authenticate';
-        return $this->sub ?? $subject;
-    }
-
-    /**
-     * @param string $sub
-     */
-    public function setSub(string $sub): void
-    {
-        $this->sub = $sub;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAud(): string
-    {
-        $audience = 'user';
-        return $this->aud ?? $audience;
-    }
-
-    /**
-     * @param string $aud
-     */
-    public function setAud(string $aud): void
-    {
-        $this->aud = $aud;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNbf(): int
-    {
-        return $this->nbf ?? time();
-    }
-
-    /**
-     * @param int $nbf
-     */
-    public function setNbf(int $nbf): void
-    {
-        $this->nbf = $nbf;
-    }
-
-    /**
-     * @return int
-     */
-    public function getIat(): int
-    {
-        return $this->iat ?? time();
-    }
-
-    /**
-     * @param int $iat
-     */
-    public function setIat(int $iat): void
-    {
-        $this->iat = $iat;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getJti(): ?string
-    {
-        return $this->jti ?? null;
-    }
-
-    /**
-     * @param string|null $jti
-     */
-    public function setJti(?string $jti): void
-    {
-        $this->jti = $jti;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUid(): string
-    {
-        return $this->uid;
-    }
-
-    /**
-     * @param string $uid
-     */
-    public function setUid(string $uid): void
-    {
-        $this->uid = $uid;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getAid(): ?int
-    {
-        return $this->aid;
-    }
-
-    /**
-     * @param int|null $aid
-     */
-    public function setAid(?int $aid): void
-    {
-        $this->aid = $aid;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getGid(): ?int
-    {
-        return $this->gid;
-    }
-
-    /**
-     * @param int|null $gid
-     */
-    public function setGid(?int $gid): void
-    {
-        $this->gid = $gid;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAdmin(): string
-    {
-        return $this->admin ?? 'false';
-    }
-
-    /**
-     * @param string $admin
-     */
-    public function setAdmin(string $admin): void
-    {
-        $this->admin = $admin;
-    }
-
-    /**
-     * @return array
-     */
-    public function getHeader(): array
-    {
-        return $this->header;
-    }
-
-    /**
-     * @param array $header
-     */
-    public function setHeader(array $header): void
-    {
-        $this->header = $header;
-    }
-
-    /**
-     * @return array
-     */
-    public function getPayload(): array
-    {
-        return $this->payload;
-    }
-
-    /**
-     * @param array $payload
-     */
-    public function setPayload(array $payload): void
-    {
-        $this->payload = $payload;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSignature(): string
-    {
-        return $this->signature;
-    }
-
-    /**
-     * @param string $signature
-     */
-    public function setSignature(string $signature): void
-    {
-        $this->signature = $signature;
-    }
-
-    /**
-     * @return string
-     */
-    public function getToken(): string
-    {
-        return $this->token;
-    }
-
-    /**
-     * @param string $token
-     */
-    public function setToken(string $token): void
-    {
-        $this->token = $token;
-    }
-
-
     /**
      * 获取Token
      * @return string
@@ -341,20 +29,36 @@ class JwtToken extends Token
             'typ' => $this->getTyp(),
         ];
         $this->setHeader($header);
+
         $payload = [
             'iss' => $this->getIss(),
             'exp' => $this->getExp(),
             'sub' => $this->getSub(),
-            'name' => $this->getName(),
-            'uid' => $this->getUid(),
-            'aid' => $this->getAid(),
-            'gid' => $this->getGid(),
-            'admin' => $this->getAdmin(),
             'aud' => $this->getAud(),
             'nbf' => $this->getNbf(),
             'iat' => $this->getIat(),
-            'jti' => $this->getJti(),
         ];
+
+        // 处理扩展有效载荷
+        $extendPayload = [
+            'jti',
+            'admin',
+            'account_name',
+            'account_id',
+            'account_gid',
+            'user_name',
+            'user_id',
+            'user_gid',
+            'uid'
+        ];
+        foreach ($extendPayload as $item) {
+            $method = str_replace('_', ' ', $item);
+            $method = 'get' . ucwords(str_replace(' ', '', $method));
+            if (!is_null($this->$method())) {
+                $payload[$item] = $this->$method();
+            }
+        }
+
         $this->setPayload($payload);
         $signatureObj = new Signature();
         $signature = $signatureObj->generate($this->getSecret(), $this->getHeader(), $this->getPayload());
@@ -371,7 +75,7 @@ class JwtToken extends Token
      * @param string $secret
      * @param string $token
      * @return bool
-     * @throws ReflectionException
+     * @throws Exception
      */
     public function verify(string $secret, string $token): bool
     {
@@ -385,12 +89,6 @@ class JwtToken extends Token
         }
         $header = Json::jsonDecode(Base64Url::base64UrlDecode($token[0]));
         $payload = Json::jsonDecode(Base64Url::base64UrlDecode($token[1]));
-        if (is_null($header)) {
-            throw new ValueException("头部解码失败");
-        }
-        if (is_null($payload)) {
-            throw new ValueException("有效负载解码失败");
-        }
         $rawSignature = Base64Url::base64UrlDecode($token[2]);
         if (false === $rawSignature) {
             throw new ValueException("签名解码失败");

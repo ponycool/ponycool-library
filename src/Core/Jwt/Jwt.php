@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace PonyCool\Core\Jwt;
 
+use Exception;
 use PonyCool\Core\Jwt\Base64\Base64Url;
 use PonyCool\Core\Jwt\Json\Json;
 use ReflectionMethod;
 use PonyCool\Core\Jwt\Factory\JwtTokenFactory;
 use PonyCool\Core\Jwt\Validation\ValidationStrategy;
 use ReflectionException;
-use PonyCool\Core\Jwt\Exception\{TokenException,
-    ValueException
-};
+use PonyCool\Core\Jwt\Exception\TokenException;
+use PonyCool\Core\Jwt\Exception\ValueException;
 
 class Jwt
 {
@@ -65,7 +65,7 @@ class Jwt
                 try {
                     $method = new ReflectionMethod(get_class($token), 'set' . ucfirst(strtolower($k)));
                     $method->invoke($token, $v);
-                } catch (ReflectionException $exception) {
+                } catch (ReflectionException) {
                     throw new ReflectionException("JWT有效负载存在无效的属性");
                 }
             }
@@ -78,7 +78,7 @@ class Jwt
      * @param string $secret
      * @param string $t
      * @return bool
-     * @throws ReflectionException
+     * @throws Exception
      */
     public function verify(string $secret, string $t): bool
     {
@@ -86,7 +86,7 @@ class Jwt
         $token = $factory->createToken();
         try {
             return $token->verify($secret, $t);
-        } catch (TokenException $exception) {
+        } catch (TokenException) {
             return false;
         }
     }
@@ -105,7 +105,7 @@ class Jwt
                 throw new TokenException("不合法的TOKEN");
             }
             $payload = Json::jsonDecode(Base64Url::base64UrlDecode($token[1]));
-        } catch (TokenException $exception) {
+        } catch (TokenException) {
         }
         return $payload;
     }
