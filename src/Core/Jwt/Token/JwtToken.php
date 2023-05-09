@@ -46,7 +46,7 @@ class JwtToken extends Token
             'account_name',
             'account_id',
             'account_gid',
-            'user_name',
+            'username',
             'user_id',
             'user_gid',
             'uid'

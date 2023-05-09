@@ -38,6 +38,7 @@ class JwtTest extends TestCase
         $payload = [
             'sub' => 'test',
             'uid' => 1,
+            'username' => 'test',
             'admin' => 'true',
         ];
         $jwt = new JwtLib();

@@ -32,7 +32,7 @@ abstract class Token
     // 账户全局ID
     protected ?int $accountGid;
     // 用户名
-    protected ?string $userName;
+    protected ?string $username;
     // 用户ID
     protected ?int $userId;
     // 用户全局ID
@@ -56,7 +56,7 @@ abstract class Token
         $this->setAccountName(null);
         $this->setAccountId(null);
         $this->setAccountGid(null);
-        $this->setUserName(null);
+        $this->setUsername(null);
         $this->setUserId(null);
         $this->setUserGid(null);
         $this->setUid(null);
@@ -290,18 +290,18 @@ abstract class Token
      * 用户名称
      * @return string|null
      */
-    public function getUserName(): ?string
+    public function getUsername(): ?string
     {
-        return $this->userName;
+        return $this->username;
     }
 
     /**
      * 设置用户名称
-     * @param string|null $userName
+     * @param string|null $username
      */
-    public function setUserName(?string $userName): void
+    public function setUsername(?string $username): void
     {
-        $this->userName = $userName;
+        $this->username = $username;
     }
 
     /**
