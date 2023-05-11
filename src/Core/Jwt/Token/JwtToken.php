@@ -116,11 +116,12 @@ class JwtToken extends Token
                 }
             }
             if ($k === 'admin') {
-                if (!in_array($v, ['true', 'false'], true)) {
+                if (!is_bool($v)) {
                     throw new ValueException("Admin类型错误");
                 }
             }
-            $method = 'set' . ucfirst(strtolower($k));
+            $method = str_replace('_', ' ', $k);
+            $method = 'set' . ucwords(str_replace(' ', '', $method));
             if (!method_exists($this, $method)) {
                 throw new MethodCallException("JWT有效负载存在无效的属性");
             }

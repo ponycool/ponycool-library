@@ -40,7 +40,7 @@ abstract class Token
     // 用户UID
     protected ?string $uid;
     // 管理用户
-    protected ?string $admin;
+    protected bool $admin;
     // 头部
     protected array $header;
     // 有效负载
@@ -60,7 +60,7 @@ abstract class Token
         $this->setUserId(null);
         $this->setUserGid(null);
         $this->setUid(null);
-        $this->setAdmin(null);
+        $this->setAdmin(false);
     }
 
     /**
@@ -353,17 +353,17 @@ abstract class Token
     }
 
     /**
-     * @return string|null
+     * @return bool
      */
-    public function getAdmin(): ?string
+    public function getAdmin(): bool
     {
         return $this->admin;
     }
 
     /**
-     * @param string|null $admin
+     * @param bool $admin
      */
-    public function setAdmin(?string $admin): void
+    public function setAdmin(bool $admin): void
     {
         $this->admin = $admin;
     }

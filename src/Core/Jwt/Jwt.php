@@ -58,12 +58,14 @@ class Jwt
                     }
                 }
                 if ($k === 'admin') {
-                    if (!in_array($v, ['true', 'false'], true)) {
+                    if (!is_bool($v)) {
                         throw new ValueException("Admin类型错误");
                     }
                 }
                 try {
-                    $method = new ReflectionMethod(get_class($token), 'set' . ucfirst(strtolower($k)));
+                    $methodName = str_replace('_', ' ', $k);
+                    $methodName = 'set' . ucwords(str_replace(' ', '', $methodName));
+                    $method = new ReflectionMethod(get_class($token), $methodName);
                     $method->invoke($token, $v);
                 } catch (ReflectionException) {
                     throw new ReflectionException("JWT有效负载存在无效的属性");

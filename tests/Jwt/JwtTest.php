@@ -39,7 +39,8 @@ class JwtTest extends TestCase
             'sub' => 'test',
             'uid' => 1,
             'username' => 'test',
-            'admin' => 'true',
+            'admin' => true,
+            'account_id' => '2',
         ];
         $jwt = new JwtLib();
         try {
