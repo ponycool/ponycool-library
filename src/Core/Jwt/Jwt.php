@@ -64,7 +64,7 @@ class Jwt
                 }
                 try {
                     $methodName = str_replace('_', ' ', $k);
-                    $methodName = 'set' . ucwords(str_replace(' ', '', $methodName));
+                    $methodName = 'set' . str_replace(' ', '', ucwords($methodName));
                     $method = new ReflectionMethod(get_class($token), $methodName);
                     $method->invoke($token, $v);
                 } catch (ReflectionException) {
