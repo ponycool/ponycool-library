@@ -52,7 +52,7 @@ class Jwt
             ];
             foreach ($payload as $k => $v) {
                 if (key_exists($k, $timestampArr)) {
-                    $res = $validation->validator($v);
+                    $res = $validation->validator((string)$v);
                     if (!$res) {
                         throw new ValueException($timestampArr[$k] . "时间格式错误");
                     }

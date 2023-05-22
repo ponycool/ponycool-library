@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Jwt;
 
+use Carbon\Carbon;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use PonyCool\Core\Jwt\Jwt as JwtLib;
@@ -35,8 +36,10 @@ class JwtTest extends TestCase
             'typ' => 'JWT',
             'alg' => 'HS256'
         ];
+        $dt = Carbon::now();
         $payload = [
             'sub' => 'test',
+            'exp' => $dt->addSeconds()->getTimestamp(),
             'uid' => 1,
             'username' => 'test',
             'admin' => true,
