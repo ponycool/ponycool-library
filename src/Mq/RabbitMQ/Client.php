@@ -7,7 +7,7 @@
  */
 declare(strict_types=1);
 
-namespace PonyCool\MQ\RabbitMQ;
+namespace PonyCool\Mq\RabbitMQ;
 
 use Exception;
 use CodeIgniter\CLI\CLI;
