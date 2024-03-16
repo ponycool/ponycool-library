@@ -75,8 +75,10 @@ class File
                 }
             }
             $line = fgets($fp);
-            $str .= $line;
-            $resArray[] = $line;
+            if ($line !== false) {
+                $str .= $line;
+                $resArray[] = $line;
+            }
             $eof = "";
             $n--;
         }
