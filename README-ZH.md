@@ -19,8 +19,6 @@ composer require ponycool/ponycool-library
 
 ```
 make test
-# 手动测试单个文件
-phpunit tests/File
 ```
 
 # 开源协议
