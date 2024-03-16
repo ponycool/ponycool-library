@@ -2,17 +2,23 @@ English | [中文](https://github.com/PonyCool/ponycool-library/blob/main/README
 
 # What is PonyCool Library
 
-PonyCool Library is an extension library for the CodeIgniter framework
+PonyCool Library is an extension library for the Codeigniter4 framework
 
 # Requirements
 
-- PHP version 8.1 or higher is required
-- CodeIgniter 4.2.1 or higher
+- PHP version 8.2 or higher is required
+- Codeigniter 4.4.0 or higher
 
 # Usage
 
 ```
 composer require ponycool/ponycool-library
+```
+
+# Test
+
+```
+make test
 ```
 
 # License

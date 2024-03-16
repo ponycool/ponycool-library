@@ -2,17 +2,23 @@
 
 # PonyCool Library是什么
 
-PonyCool Library 是一个为CodeIgniter框架提供支持的扩展库
+PonyCool Library 是一个为Codeigniter4框架提供支持的扩展库
 
 # 要求
 
-- PHP 8.1 或更高版本
-- CodeIgniter 4.2.1 或更高版本
+- PHP 8.2 或更高版本
+- Codeigniter 4.4.0 或更高版本
 
 # 使用
 
 ```
 composer require ponycool/ponycool-library
+```
+
+# 测试
+
+```
+make test
 ```
 
 # 开源协议
