@@ -19,6 +19,8 @@ composer require ponycool/ponycool-library
 
 ```
 make test
+# Manually test a single file
+phpunit tests/File
 ```
 
 # License
