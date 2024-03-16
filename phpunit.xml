@@ -8,6 +8,7 @@
             <directory phpVersion="8.0.0" phpVersionOperator=">=">tests/Jwt</directory>
             <directory phpVersion="8.0.0" phpVersionOperator=">=">tests/ObjectStorage</directory>
             <!-- <directory phpVersion="8.0.0" phpVersionOperator=">=">tests/Redis</directory> -->
+            <directory phpVersion="8.0.0" phpVersionOperator=">=">tests/File</directory>
         </testsuite>
     </testsuites>
     <!-- 测试日志 -->

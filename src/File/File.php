@@ -41,8 +41,49 @@ class File
                 throw new Exception('文件保存失败');
             }
             return true;
-        } catch (Exception | GuzzleException $e) {
+        } catch (Exception|GuzzleException $e) {
             return false;
         }
+    }
+
+    /**
+     * 读取文件最后N行数据
+     * @param string $file 文件路径
+     * @param $n int 读取数据行数
+     * @param string $returnType 返回数据类型
+     * @return false|string|array
+     */
+    public static function getFileLastLines(string $file, int $n = 100, string $returnType = "array"): false|string|array
+    {
+        if (!file_exists($file)) {
+            return false;
+        }
+        if (!$fp = fopen($file, 'r')) {
+            return false;
+        }
+        $pos = -2;
+        $eof = "";
+        $str = "";
+        $resArray = array();
+        while ($n > 0) {
+            while ($eof != "\n") {
+                if (!fseek($fp, $pos, SEEK_END)) {
+                    $eof = fgetc($fp);
+                    $pos--;
+                } else {
+                    break;
+                }
+            }
+            $line = fgets($fp);
+            $str .= $line;
+            $resArray[] = $line;
+            $eof = "";
+            $n--;
+        }
+        return match ($returnType) {
+            'json' => json_encode($resArray),
+            'array' => $resArray,
+            default => $str,
+        };
     }
 }
