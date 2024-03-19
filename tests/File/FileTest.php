@@ -23,7 +23,19 @@ class FileTest extends TestCase
     {
         $file = __FILE__;
         $fileHelper = new FileHelper();
-        $res = $fileHelper::getFileLastLines($file, 5,);
+        $res = $fileHelper::getFileLastLines($file, 5);
         self::assertIsNotBool($res, '读取文件最后N行数据结果未达到预期');
+    }
+
+    /**
+     * 分页获取目录下的文件
+     * @return void
+     */
+    public function testPaginateFiles(): void
+    {
+        $path = __DIR__;
+        $fileHelper = new FileHelper();
+        $res = $fileHelper::paginateFiles($path);
+        self::assertIsArray($res);
     }
 }

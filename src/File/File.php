@@ -41,7 +41,7 @@ class File
                 throw new Exception('文件保存失败');
             }
             return true;
-        } catch (Exception|GuzzleException $e) {
+        } catch (Exception|GuzzleException) {
             return false;
         }
     }
@@ -87,5 +87,36 @@ class File
             'array' => $resArray,
             default => $str,
         };
+    }
+
+    /**
+     * 分页获取目录下的文件
+     * @param string $dir 目录
+     * @param int $page 页码
+     * @param int $size
+     * @return array
+     */
+    public static function paginateFiles(string $dir, int $page = 1, int $size = 10): array
+    {
+        // 获取所有文件
+        $files = glob($dir . '/*.*', GLOB_BRACE);
+
+        // 计算总页数
+        $totalPages = ceil(count($files) / $size);
+
+        // 偏移量
+        $offset = ($page - 1) * $size;
+
+        // 获取当前页的文件
+        $currentPageFiles = array_slice($files, $offset, $size);
+
+        // 返回结果
+        return [
+            'page' => $page,
+            'size' => $size,
+            'total' => count($files),
+            'totalPages' => $totalPages,
+            'currentPageFiles' => $currentPageFiles,
+        ];
     }
 }
