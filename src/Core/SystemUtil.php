@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace PonyCool\Core;
 
 use Carbon\Carbon;
+use Exception;
 
 class SystemUtil
 {
@@ -78,7 +79,11 @@ class SystemUtil
      */
     public static function uptime(): string
     {
-        $bootTime = Carbon::createFromTimeString(self::bootTime());
+        try {
+            $bootTime = Carbon::createFromTimeString(self::bootTime());
+        } catch (Exception) {
+            return '';
+        }
         $diff = Carbon::now()->diff($bootTime);
         return sprintf('%d天%d小时%d分钟%d秒', $diff->days, $diff->h, $diff->m, $diff->s);
     }
