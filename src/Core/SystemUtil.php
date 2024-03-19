@@ -64,6 +64,9 @@ class SystemUtil
     public static function bootTime(): string
     {
         $output = shell_exec('who -b');
+        if (!is_string($output)) {
+            return '';
+        }
         $bootTime = explode('boot', $output)[1] ?? null;
         $bootTime = Carbon::createFromTimeString($bootTime);
         return $bootTime->toDateTimeString();
