@@ -61,31 +61,24 @@ class File
         if (!$fp = fopen($file, 'r')) {
             return false;
         }
-        $pos = -2;
-        $eof = "";
-        $str = "";
-        $resArray = array();
-        while ($n > 0) {
-            while ($eof != "\n") {
-                if (!fseek($fp, $pos, SEEK_END)) {
-                    $eof = fgetc($fp);
-                    $pos--;
-                } else {
-                    break;
-                }
-            }
-            $line = fgets($fp);
-            if ($line !== false) {
-                $str .= $line;
-                $resArray[] = $line;
-            }
-            $eof = "";
+        $lines = array();
+        // 从文件末尾开始
+        $pos = -1;
+
+        while ($n > 0 && ($line = fgets($fp)) !== false) {
+            $lines[] = $line;
+            // 根据行长更新位置
+            $pos -= strlen($line);
             $n--;
         }
+
+        fclose($fp);
+
         return match ($returnType) {
-            'json' => json_encode($resArray),
-            'array' => $resArray,
-            default => $str,
+            'json' => json_encode($lines),
+            'array' => $lines,
+            // 连接行以获取字符串类型
+            default => implode('', $lines),
         };
     }
 
