@@ -61,24 +61,44 @@ class File
         if (!$fp = fopen($file, 'r')) {
             return false;
         }
-        $lines = array();
-        // 从文件末尾开始
-        $pos = -1;
+        // 用于记录文件内查找的当前位置
+        $pos = -2;
+        // 初始化eof变量，用于存储查找过程中的结束标识符（默认是换行符'\n'）
+        $eof = "";
+        $str = "";
+        $resArray = [];
+        // 定位到文件末尾
+        fseek($fp, 0, SEEK_END);
+        while ($n > 0) {
+            while ($eof != "\n") {
+                if (!fseek($fp, $pos, SEEK_END)) {
+                    $eof = fgetc($fp);
+                    $pos--;
+                } else {
+                    if ($n == 1) {
+                        $pos++;
+                        fseek($fp, $pos, SEEK_END);
+                    }
+                    break;
+                }
+            }
 
-        while ($n > 0 && ($line = fgets($fp)) !== false) {
-            $lines[] = $line;
-            // 根据行长更新位置
-            $pos -= strlen($line);
+            $line = fgets($fp);
+            if ($line !== false) {
+                $str .= $line;
+                $resArray[] = $line;
+            }
+            $eof = "";
             $n--;
         }
-
         fclose($fp);
 
+        $resArray = array_reverse($resArray);
+
         return match ($returnType) {
-            'json' => json_encode($lines),
-            'array' => $lines,
-            // 连接行以获取字符串类型
-            default => implode('', $lines),
+            'json' => json_encode($resArray),
+            'array' => $resArray,
+            default => $str,
         };
     }
 
