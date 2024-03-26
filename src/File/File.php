@@ -10,8 +10,11 @@ declare(strict_types=1);
 namespace PonyCool\File;
 
 use Exception;
+use FilesystemIterator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class File
 {
@@ -112,7 +115,11 @@ class File
     public static function paginateFiles(string $dir, int $page = 1, int $size = 10): array
     {
         // 获取所有文件
-        $files = glob($dir . '/*.*', GLOB_BRACE);
+        if (defined('GLOB_BRACE')) {
+            $files = glob($dir . '/*.*', GLOB_BRACE);
+        } else {
+            $files = self::getFilesRecursively($dir);
+        }
 
         // 计算总页数
         $totalPages = ceil(count($files) / $size);
@@ -131,5 +138,25 @@ class File
             'totalPages' => $totalPages,
             'currentPageFiles' => $currentPageFiles,
         ];
+    }
+
+    /**
+     * 递归获取指定目录及其子目录下的所有文件
+     * @param string $dir 目录路径
+     * @return array 文件路径列表
+     */
+    private static function getFilesRecursively(string $dir): array
+    {
+        $files = [];
+        $directoryIterator = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
+        $iterator = new RecursiveIteratorIterator($directoryIterator, RecursiveIteratorIterator::SELF_FIRST);
+
+        foreach ($iterator as $fileInfo) {
+            if ($fileInfo->isFile()) {
+                $files[] = $fileInfo->getPathname();
+            }
+        }
+
+        return $files;
     }
 }
