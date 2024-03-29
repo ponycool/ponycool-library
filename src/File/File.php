@@ -110,9 +110,10 @@ class File
      * @param string $dir 目录
      * @param int $page 页码
      * @param int $size
+     * @param string $sort
      * @return array
      */
-    public static function paginateFiles(string $dir, int $page = 1, int $size = 10): array
+    public static function paginateFiles(string $dir, int $page = 1, int $size = 10, string $sort = 'ASC'): array
     {
         // 获取所有文件
         if (defined('GLOB_BRACE')) {
@@ -120,6 +121,16 @@ class File
         } else {
             $files = self::getFilesRecursively($dir);
         }
+
+        // 按文件创建时间排序
+        usort($files, function ($a, $b) use ($sort) {
+            $orderMultiplier = match ($sort) {
+                'ASC' => 1,
+                'DESC' => -1,
+            };
+
+            return ($orderMultiplier * (filectime($a) <=> filectime($b)));
+        });
 
         // 计算总页数
         $totalPages = ceil(count($files) / $size);
