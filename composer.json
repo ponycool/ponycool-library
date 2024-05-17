@@ -9,7 +9,7 @@
     "aliyuncs/oss-sdk-php": "^2.6",
     "guzzlehttp/guzzle": "^7.5",
     "ext-openssl": "*",
-    "nesbot/carbon": "^2.66"
+    "nesbot/carbon": "^3.0"
   },
   "license": "MIT",
   "authors": [
