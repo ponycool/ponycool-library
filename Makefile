@@ -2,4 +2,4 @@ all: test
 
 .PHONY: test
 test:
-	./scripts/test.sh
+	./script/test.sh

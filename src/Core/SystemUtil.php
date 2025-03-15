@@ -11,6 +11,7 @@ namespace PonyCool\Core;
 
 use Carbon\Carbon;
 use Exception;
+use PonyCool\Core\Util\System;
 
 class SystemUtil
 {
@@ -64,6 +65,24 @@ class SystemUtil
      */
     public static function bootTime(): string
     {
+        if (System::inDocker()) {
+            $bootTime = '';
+            $statContent = file_get_contents('/proc/stat');
+            if ($statContent !== false) {
+                $lines = explode("\n", $statContent);
+                foreach ($lines as $line) {
+                    if (str_starts_with($line, 'btime ')) {
+                        // 提取启动时间戳
+                        $fields = explode(' ', $line);
+                        $bootTimestamp = (int)$fields[1];
+                        // 将时间戳转换为可读的日期时间格式
+                        $bootTime = date('Y-m-d H:i:s', $bootTimestamp);
+                        break;
+                    }
+                }
+            }
+            return $bootTime;
+        }
         $output = shell_exec('who -b');
         if (!is_string($output)) {
             return '';
