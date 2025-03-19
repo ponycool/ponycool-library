@@ -99,12 +99,12 @@ class SystemUtil
     public static function uptime(): string
     {
         try {
-            $bootTime = Carbon::createFromTimeString(self::bootTime());
+            $bootTime = Carbon::createFromFormat('Y-m-d H:i:s', self::bootTime());
         } catch (Exception) {
             return '';
         }
         $diff = Carbon::now()->diff($bootTime);
-        return sprintf('%d天%d小时%d分钟%d秒', $diff->days, $diff->h, $diff->m, $diff->s);
+        return sprintf('%d天%d小时%d分钟%d秒', $diff->d, $diff->h, $diff->i, $diff->s);
     }
 
     /**
