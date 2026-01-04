@@ -130,30 +130,52 @@ class SystemUtil
         if (strtoupper(substr(PHP_OS, 0, 5)) === 'LINUX') {
             // 获取第一行CPU总体使用信息
             $cpuInfo = file_get_contents('/proc/stat');
-            $cpuData = explode(' ', preg_split("/\n/", $cpuInfo)[0]);
+            if ($cpuInfo === false) {
+                return '0';
+            }
+
+            $lines = preg_split("/\n/", $cpuInfo, -1, PREG_SPLIT_NO_EMPTY);
+            $firstLine = trim($lines[0] ?? '');
+            $cpuData = array_filter(preg_split('/\s+/', $firstLine));
+
+            // 移除第一个元素 "cpu"
+            $values = array_slice($cpuData, 1);
+            $numericValues = array_values(array_filter($values, 'is_numeric'));
+            $numericValues = array_map('intval', $numericValues);
+
+            if (count($numericValues) < 4) {
+                // 数据不完整
+                return '0';
+            }
 
             // 计算非idle时间
-            $nonIdle = array_sum(array_slice($cpuData, 1, 7));
+            $nonIdle = array_sum(array_slice($numericValues, 0, min(7, count($numericValues))));
 
             // 获取总的CPU时间
-            $totalCpuTime = array_sum($cpuData);
+            $totalCpuTime = array_sum($numericValues);
 
             // 上次记录的非idle时间和总时间
             static $prevNonIdle = 0, $prevTotal = 0;
 
             // 首次运行时初始化历史数据
             if ($prevNonIdle == 0 && $prevTotal == 0) {
-                list($prevNonIdle, $prevTotal) = [$nonIdle, $totalCpuTime];
+                $prevNonIdle = $nonIdle;
+                $prevTotal = $totalCpuTime;
                 return '0';
             }
 
             // 计算CPU使用率
             $deltaTotal = $totalCpuTime - $prevTotal;
             $deltaNonIdle = $nonIdle - $prevNonIdle;
-            $cpuUsage = ($deltaTotal - $deltaNonIdle) / $deltaTotal * 100;
+            if ($deltaTotal <= 0) {
+                return '0';
+            }
+
+            $cpuUsage = ($deltaNonIdle / $deltaTotal) * 100;
 
             // 更新历史数据
-            list($prevNonIdle, $prevTotal) = [$nonIdle, $totalCpuTime];
+            $prevNonIdle = $nonIdle;
+            $prevTotal = $totalCpuTime;
 
             return (string)round($cpuUsage, 2);
         } elseif (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN') {
